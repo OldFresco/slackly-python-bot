@@ -8,8 +8,13 @@ LOOP_DELAY = 1
 
 # credentials
 BOT_NAME = 'testbot'
-BOT_TOKEN = 'xoxb-203413038274-s0RwqSa1cYKYYNnjmizv0N1i'
+BOT_TOKEN = 'TOKEN'
 BOT_ID = 'U5ZC51482'
+
+## HELPER FUNCTIONS ##
+
+def logEvent():
+    return '-- NEW EVENT LOG --'
 
 ## MAIN PROGRAM ##
 
@@ -38,9 +43,15 @@ def run():
             # if there are any then...
             if len(event_list) > 0:
                 for event in event_list:
-                    print event
-                    # call our handler function which posts a message to the channel of the incoming event
-                    handle_message(message=event.get('text'), user=event.get('user'), channel=event.get('channel'))
+                    print '-- NEW EVENT LOG --'
+                    print 'USER: ' + str(event.get('user'))
+                    print 'CHANNEL: ' + str(event.get('channel'))
+                    print 'TYPE: ' + str(event.get('type'))
+                    print 'TEXT: ' + str(event.get('text'))
+                    print ''
+                    if event.get('user') != 'U5ZC51482' and event.get('type') == 'message':
+                        # call our handler function which posts a message to the channel of the incoming event
+                        handle_message(message=event.get('text'), user=event.get('user'), channel=event.get('channel'))
             time.sleep(LOOP_DELAY)
     else:
         print '[!] Connection to Slack failed.'
