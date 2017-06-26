@@ -48,7 +48,7 @@ def run():
                     print 'CHANNEL: ' + str(event.get('channel'))
                     print 'TYPE: ' + str(event.get('type'))
                     print 'TEXT: ' + str(event.get('text'))
-                    print ''
+                    print ' '
                     if event.get('user') != 'U5ZC51482' and event.get('type') == 'message':
                         # call our handler function which posts a message to the channel of the incoming event
                         handle_message(message=event.get('text'), user=event.get('user'), channel=event.get('channel'))
