@@ -1,5 +1,6 @@
 import time
 import slackclient
+import sys
 
 ## DEFINE CONSTANTS ##
 
@@ -8,13 +9,18 @@ LOOP_DELAY = 1
 
 # credentials
 BOT_NAME = 'testbot'
-BOT_TOKEN = 'TOKEN'
+BOT_TOKEN = 'xoxb-203413038274-wBW2hbGfrdC0VLxFIeDVGu2c'
 BOT_ID = 'U5ZC51482'
 
 ## HELPER FUNCTIONS ##
 
-def logEvent():
-    return '-- NEW EVENT LOG --'
+def log_event(event, out=sys.stdout):
+    out.write('-- NEW EVENT LOG -- \n')
+    out.write('\nUSER: ' + str(event.get('user')))
+    out.write('\nCHANNEL: ' + str(event.get('channel')))
+    out.write('\nTYPE: ' + str(event.get('type')))
+    out.write('\nTEXT: ' + str(event.get('text')))
+    out.write(' ')
 
 ## MAIN PROGRAM ##
 
@@ -43,12 +49,7 @@ def run():
             # if there are any then...
             if len(event_list) > 0:
                 for event in event_list:
-                    print '-- NEW EVENT LOG --'
-                    print 'USER: ' + str(event.get('user'))
-                    print 'CHANNEL: ' + str(event.get('channel'))
-                    print 'TYPE: ' + str(event.get('type'))
-                    print 'TEXT: ' + str(event.get('text'))
-                    print ' '
+                    log_event(event)
                     # if the event does not come from us and is a message then...
                     if event.get('user') != 'U5ZC51482' and event.get('type') == 'message':
                         # call our handler function which posts a message to the channel of the incoming event
