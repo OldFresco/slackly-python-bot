@@ -9,7 +9,7 @@ LOOP_DELAY = 1
 
 # credentials
 BOT_NAME = 'testbot'
-BOT_TOKEN = 'TOKEN'
+BOT_TOKEN = ''
 BOT_ID = 'U5ZC51482'
 
 ## HELPER FUNCTIONS ##
@@ -22,6 +22,16 @@ def log_event(event, out=sys.stdout):
     out.write('\nTEXT: ' + str(event.get('text')))
     out.write(' ')
 
+def is_a_greeting(message):
+    greeting_key_words = ['hi','hello','hey','welcome','how are you?']
+
+    message = message.lower()
+
+    if any(word in message for word in greeting_key_words):
+        return True
+    else:
+        return False
+
 ## MAIN PROGRAM ##
 
 # intialise our slack client
@@ -29,7 +39,10 @@ slack_client = slackclient.SlackClient(BOT_TOKEN)
 
 # This functions handles direct messages sent to our slack bot
 def handle_message(message, user, channel):
-    post_message(message='Hello', channel=channel)
+    if is_a_greeting(message):
+        post_message(message='Hi, how can I help?', channel=channel)
+    else:
+        post_message(message='Sorry, I don\'t know what that means!', channel=channel)
 
 # This function uses the slack client to post a message back in the channel passed in as an arg
 def post_message(message, channel):
