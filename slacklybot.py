@@ -49,6 +49,7 @@ def run():
                     print 'TYPE: ' + str(event.get('type'))
                     print 'TEXT: ' + str(event.get('text'))
                     print ' '
+                    # if the event does not come from us and is a message then...
                     if event.get('user') != 'U5ZC51482' and event.get('type') == 'message':
                         # call our handler function which posts a message to the channel of the incoming event
                         handle_message(message=event.get('text'), user=event.get('user'), channel=event.get('channel'))
@@ -56,6 +57,6 @@ def run():
     else:
         print '[!] Connection to Slack failed.'
 
-# Python sets the __name__ var as equal to __main__ when this code runs without being imported, so will be true.
+# Python sets the __name__ var as equal to __main__ when this code runs without being imported, so will be true when executed as file.
 if __name__ == '__main__':
     run()
