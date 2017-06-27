@@ -9,7 +9,7 @@ LOOP_DELAY = 1
 
 # credentials
 BOT_NAME = 'testbot'
-BOT_TOKEN = 'xoxb-203413038274-wBW2hbGfrdC0VLxFIeDVGu2c'
+BOT_TOKEN = 'TOKEN'
 BOT_ID = 'U5ZC51482'
 
 ## HELPER FUNCTIONS ##
