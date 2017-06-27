@@ -1,2 +1,3 @@
 slackclient
 pytest
+Flask==0.12.1

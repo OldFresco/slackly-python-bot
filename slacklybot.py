@@ -1,6 +1,15 @@
 import time
 import slackclient
 import sys
+import threading
+from flask import Flask
+
+## HTTP SERVER ##
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+  return 'Hello, World!'
 
 ## DEFINE CONSTANTS ##
 
@@ -71,6 +80,11 @@ def run():
     else:
         print '[!] Connection to Slack failed.'
 
+def start_server():
+    app.run()
+
 # Python sets the __name__ var as equal to __main__ when this code runs without being imported, so will be true when executed as file.
 if __name__ == '__main__':
+    server_task = threading.Thread(target=start_server)
+    server_task.start()
     run()
