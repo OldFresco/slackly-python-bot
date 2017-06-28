@@ -35,9 +35,12 @@ def log_event(event, out=sys.stdout):
     out.write(' ')
 
 def is_a_greeting(message):
+    # Make all letters lower case
     message = message.lower()
+    # Split the message into a word list
     message_word_list = message.split()
 
+    # Try and find a match with our greeting key word list
     if any(word in message_word_list for word in greeting_key_words):
         return True
     else:
