@@ -3,6 +3,7 @@ import slackclient
 import sys
 import threading
 from flask import Flask
+from fuzzywuzzy import fuzz
 
 ## HTTP SERVER ##
 app = Flask(__name__)
@@ -21,8 +22,9 @@ BOT_NAME = 'testbot'
 BOT_TOKEN = ''
 BOT_ID = 'U5ZC51482'
 
-# NLP word keys (knowledge)
-greeting_key_words = ['hi','hello','hey','welcome','how are you?','yo']
+# NLP word phrases (knowledge)
+greeting_key_phrases = ['hi','hello','hey','welcome','yo']
+opening_hours_query_key_phrases= ['when are you open?','what time are you open until?','are you closed?','what are your opening hours?','what time are you open until?','hours','time','opening','closed']
 
 ## HELPER FUNCTIONS ##
 
@@ -40,11 +42,26 @@ def is_a_greeting(message):
     # Split the message into a word list
     message_word_list = message.split()
 
-    # Try and find a match with our greeting key word list
-    if any(word in message_word_list for word in greeting_key_words):
+    # Try and find a match with our greeting key phrase list
+    if any(word in message_word_list for word in greeting_key_phrases):
         return True
     else:
         return False
+
+def is_a_opening_hours_query(message):
+    # Make all letters lower case
+    message = message.lower()
+
+    for phrase in opening_hours_query_key_phrases:
+        print ("message: "+ message)
+        print ("phrase: "+ phrase)
+        print ("fuzzy match score: " + str(fuzz.partial_ratio(phrase, message)))
+        if (fuzz.partial_ratio(phrase, message) > 80):
+            print ("found one")
+            return True
+    
+    return False
+
 
 ## MAIN PROGRAM ##
 
@@ -55,6 +72,8 @@ slack_client = slackclient.SlackClient(BOT_TOKEN)
 def handle_message(message, user, channel):
     if is_a_greeting(message):
         post_message(message='Hi, how can I help?', channel=channel)
+    elif is_a_opening_hours_query(message):
+        post_message(message='We are open from 8:00 a.m. until 20:00 p.m. tonight!', channel=channel)
     else:
         post_message(message='Sorry, I don\'t know what that means!', channel=channel)
 
