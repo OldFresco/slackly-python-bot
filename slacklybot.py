@@ -21,6 +21,9 @@ BOT_NAME = 'testbot'
 BOT_TOKEN = ''
 BOT_ID = 'U5ZC51482'
 
+# NLP word keys (knowledge)
+greeting_key_words = ['hi','hello','hey','welcome','how are you?','yo']
+
 ## HELPER FUNCTIONS ##
 
 def log_event(event, out=sys.stdout):
@@ -32,11 +35,10 @@ def log_event(event, out=sys.stdout):
     out.write(' ')
 
 def is_a_greeting(message):
-    greeting_key_words = ['hi','hello','hey','welcome','how are you?']
-
     message = message.lower()
+    message_word_list = message.split()
 
-    if any(word in message for word in greeting_key_words):
+    if any(word in message_word_list for word in greeting_key_words):
         return True
     else:
         return False
@@ -73,7 +75,7 @@ def run():
                 for event in event_list:
                     log_event(event)
                     # if the event does not come from us and is a message then...
-                    if event.get('user') != 'U5ZC51482' and event.get('type') == 'message':
+                    if event.get('user') != BOT_ID and event.get('type') == 'message':
                         # call our handler function which posts a message to the channel of the incoming event
                         handle_message(message=event.get('text'), user=event.get('user'), channel=event.get('channel'))
             time.sleep(LOOP_DELAY)
@@ -85,6 +87,8 @@ def start_server():
 
 # Python sets the __name__ var as equal to __main__ when this code runs without being imported, so will be true when executed as file.
 if __name__ == '__main__':
+    # Start the http server as a process in a child thread
     server_task = threading.Thread(target=start_server)
     server_task.start()
+    # Start our slack communication event poller
     run()
